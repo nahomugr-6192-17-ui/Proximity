@@ -2,8 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Survival
+  - 20
+  - 40
+  - 60
+  - 80
+  - 100
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -41,3 +48,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: 100 Coin
+    uniqueID: 3614346633
+    locked: 0
+  - name: Player Coin
+    uniqueID: 305368905
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  m_MigratedRenderPipelines: []
