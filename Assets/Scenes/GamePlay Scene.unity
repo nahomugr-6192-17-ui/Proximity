@@ -315,7 +315,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   rb: {fileID: 239286586}
-  pushForce: 10
+  pushForce: 0
+  isMoving: 0
+  isTouchingPlayer: 0
+  startTouchPosition: {x: 0, y: 0}
 --- !u!212 &239286584
 SpriteRenderer:
   serializedVersion: 3
