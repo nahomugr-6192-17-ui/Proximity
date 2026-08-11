@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class playerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public float pushForce;
+    public float pushForce = 4f;
     public bool isMoving = false;
     public bool isTouchingPlayer = false;
     public Vector2 startTouchPosition;
@@ -68,6 +68,13 @@ public class playerMovement : MonoBehaviour
             shotDistance = dragVector.magnitude;
 
             shotDirection = -dragVector.normalized;
+        }
+        if(Touchscreen.current.primaryTouch.press.wasReleasedThisFrame && isTouchingPlayer)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.AddForce(shotDirection * shotDistance * pushForce, ForceMode2D.Impulse);
+            isTouchingPlayer = false;
+            isMoving = true;
         }
     }
 }
