@@ -8,6 +8,8 @@ public class playerMovement : MonoBehaviour
     public bool isMoving = false;
     public bool isTouchingPlayer = false;
     public Vector2 startTouchPosition;
+    public Vector2 dragVector;
+    public Vector2 shotDirection;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,8 +56,15 @@ public class playerMovement : MonoBehaviour
         {
             Vector2 currentTouchPosition =
                 Touchscreen.current.primaryTouch.position.ReadValue();
-            Debug.Log("FINGER IS PRESSED AND HOLDING PLAYER!");
-            Debug.Log("Current Touch Position: " + currentTouchPosition);
+            Vector3 currentWorldPosition =
+                Camera.main.ScreenToWorldPoint(currentTouchPosition);
+
+            currentWorldPosition.z = 0f;
+
+            dragVector =
+                (Vector2)currentWorldPosition - startTouchPosition;
+
+            Debug.Log("Drag Vector: " + dragVector);
         }
     }
 }
