@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class playerMovement : MonoBehaviour
 {
@@ -13,13 +14,13 @@ public class playerMovement : MonoBehaviour
     public Vector2 dragVector;
     public Vector2 shotDirection;
     public float shotDistance;
-    private int score;
+    private int score = 0;
+    public Text scoreText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
-        Debug.Log("STARTED: " + gameObject.name +
-          " | Score: " + score);
+        scoreText.text = "Score: " + score;
         rb.bodyType = RigidbodyType2D.Static;
         aimLine.positionCount = 2;
         aimLine.enabled = false;
@@ -156,8 +157,7 @@ public class playerMovement : MonoBehaviour
                 break;
         }
 
-        Debug.Log("SCORE: " + gameObject.name +
-          " | Current Score: " + score);
+        scoreText.text = "Score: " + score;
         Debug.Log("Final Zone: " + finalZone);
     }
 }
