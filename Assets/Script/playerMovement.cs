@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class playerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
+    public LineRenderer aimLine;
     public float pushForce = 4f;
     public bool isMoving = false;
     public bool isTouchingPlayer = false;
@@ -15,6 +16,8 @@ public class playerMovement : MonoBehaviour
     void Start()
     {
         rb.bodyType = RigidbodyType2D.Static;
+        aimLine.positionCount = 2;
+        aimLine.enabled = false;
         isMoving = false;
         isTouchingPlayer = false;
     }
@@ -22,13 +25,12 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Touchscreen.current == null)
+        if (Touchscreen.current == null){
             return;
+        }
 
         if (Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
-            /*rb.bodyType = RigidbodyType2D.Dynamic;
-            isMoving = true;*/
             Vector2 touchPosition =
                 Touchscreen.current.primaryTouch.position.ReadValue();
 
@@ -44,6 +46,7 @@ public class playerMovement : MonoBehaviour
             {
                 startTouchPosition = worldPosition;
                 isTouchingPlayer = true;
+                aimLine.enabled = true;
 
                 Debug.Log("RED PLAYER TOUCHED!");
             }
@@ -68,6 +71,11 @@ public class playerMovement : MonoBehaviour
             shotDistance = dragVector.magnitude;
 
             shotDirection = -dragVector.normalized;
+
+            Vector2 aimLineStart = (Vector2)transform.position;
+            Vector2 aimLineEnd = aimLineStart + shotDirection * shotDistance;
+            aimLine.SetPosition(0, aimLineStart);
+            aimLine.SetPosition(1, aimLineEnd);
         }
         if(Touchscreen.current.primaryTouch.press.wasReleasedThisFrame && isTouchingPlayer)
         {
@@ -75,6 +83,7 @@ public class playerMovement : MonoBehaviour
             rb.AddForce(shotDirection * shotDistance * pushForce, ForceMode2D.Impulse);
             isTouchingPlayer = false;
             isMoving = true;
+            aimLine.enabled = false;
         }
     }
 }
