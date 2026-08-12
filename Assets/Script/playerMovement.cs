@@ -16,11 +16,14 @@ public class playerMovement : MonoBehaviour
     public float shotDistance;
     private int score = 0;
     public Text scoreText;
+    public int coinCounter = 3;
+    public Text coinCounterText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
         scoreText.text = "Score: " + score;
+        coinCounterText.text = "Coins: " + coinCounter;
         rb.bodyType = RigidbodyType2D.Static;
         aimLine.positionCount = 2;
         aimLine.enabled = false;
@@ -38,6 +41,10 @@ public class playerMovement : MonoBehaviour
 
         if (Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
+            if (coinCounter <= 0)
+            {
+                coinCounterText.text = "Coins: 0";
+            }
             Vector2 touchPosition =
                 Touchscreen.current.primaryTouch.position.ReadValue();
 
@@ -99,6 +106,8 @@ public class playerMovement : MonoBehaviour
             isMoving = false;
             string finalZone = FinalZone();
             CalculateScore(finalZone);
+            coinCounter--;
+            coinCounterText.text = "Coins: " + coinCounter;
         }
     }
 
