@@ -18,6 +18,7 @@ public class playerMovement : MonoBehaviour
     public Text scoreText;
     public int coinCounter = 3;
     public Text coinCounterText;
+    public goldenCoin goldCoinScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -94,6 +95,7 @@ public class playerMovement : MonoBehaviour
         }
         if (Touchscreen.current.primaryTouch.press.wasReleasedThisFrame && isTouchingPlayer)
         {
+            goldCoinScript.hasCollidedWithPlayer = false;
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.AddForce(shotDirection * shotDistance * pushForce, ForceMode2D.Impulse);
             isTouchingPlayer = false;
@@ -106,9 +108,27 @@ public class playerMovement : MonoBehaviour
             Debug.Log("RED PLAYER STOPPED!");
             isMoving = false;
             string finalZone = FinalZone();
-            CalculateScore(finalZone);
-            coinCounter--;
-            coinCounterText.text = "Coins: " + coinCounter;
+            bool isGoldCoinSafe = goldCoinScript.IsGoldCoinSafe();
+            bool isCollidedWithPlayer = goldCoinScript.hasCollidedWithPlayer;
+            
+            /*Debug.Log("Final Zone: " + finalZone);
+            Debug.Log("Is Gold Coin in 80: " + isGoldCoinSafe);
+            Debug.Log("Collision with a player: " + isCollidedWithPlayer);*/
+            
+            if (isGoldCoinSafe && isCollidedWithPlayer && finalZone == "80")
+            {
+                CalculateScore("100");
+            }
+            else if ((isGoldCoinSafe && isCollidedWithPlayer && finalZone != "80") || (isGoldCoinSafe && !isCollidedWithPlayer))
+            {
+                CalculateScore(finalZone);
+            }
+            else if ((isCollidedWithPlayer && !isGoldCoinSafe) || finalZone == "Unknown")
+            {
+                CalculateScore("Negative");
+                goldCoinScript.ResetGoldCoinPosition(new Vector2(0, 0), 0f);
+                Debug.Log("Condition: Collided with player but gold coin is not in 80 zone. Gold coin reset to (0,0)");
+            }
         }
     }
 
@@ -143,6 +163,9 @@ public class playerMovement : MonoBehaviour
     {
         switch (finalZone)
         {
+            case "100":
+                score += 100;
+                break;
             case "80":
                 score += 80;
                 break;
@@ -165,9 +188,13 @@ public class playerMovement : MonoBehaviour
             case "Unknown":
                 score -= 50;
                 break;
+            case "Negative":
+                score -= 30;
+                break;
         }
 
         scoreText.text = "Score: " + score;
-        Debug.Log("Final Zone: " + finalZone);
+        coinCounter--;
+        coinCounterText.text = "Coins: " + coinCounter;
     }
 }
