@@ -44,6 +44,7 @@ public class playerMovement : MonoBehaviour
             if (coinCounter <= 0)
             {
                 coinCounterText.text = "Coins: 0";
+                return;
             }
             Vector2 touchPosition =
                 Touchscreen.current.primaryTouch.position.ReadValue();
