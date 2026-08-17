@@ -14,7 +14,8 @@ public class playerMovement : MonoBehaviour
     public Vector2 dragVector;
     public Vector2 shotDirection;
     public float shotDistance;
-    private int score = 0;
+    private int score;
+    private int totalScore;
     public Text scoreText;
     public int coinCounter = 3;
     public Text coinCounterText;
@@ -129,6 +130,8 @@ public class playerMovement : MonoBehaviour
                 goldCoinScript.ResetGoldCoinPosition(new Vector2(0, 0), 0f);
                 Debug.Log("Condition: Collided with player but gold coin is not in 80 zone. Gold coin reset to (0,0)");
             }
+
+            rb.position = new Vector2(0, -20);
         }
     }
 
@@ -161,6 +164,7 @@ public class playerMovement : MonoBehaviour
 
     public void CalculateScore(string finalZone)
     {
+        score = 0;
         switch (finalZone)
         {
             case "100":
@@ -193,7 +197,8 @@ public class playerMovement : MonoBehaviour
                 break;
         }
 
-        scoreText.text = "Score: " + score;
+        totalScore += score;
+        scoreText.text = "Score: " + totalScore;
         coinCounter--;
         coinCounterText.text = "Coins: " + coinCounter;
     }

@@ -11,6 +11,7 @@ TagManager:
   - 80
   - 100
   - Floor
+  - Coin
   layers:
   - Default
   - TransparentFX
