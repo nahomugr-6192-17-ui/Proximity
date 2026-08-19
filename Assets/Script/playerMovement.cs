@@ -10,20 +10,25 @@ public class playerMovement : MonoBehaviour
     public float stopSpeed = 0.1f;
     public bool isMoving = false;
     public bool isTouchingPlayer = false;
+    public bool canPlay = false;
     public Vector2 startTouchPosition;
     public Vector2 dragVector;
     public Vector2 shotDirection;
     public float shotDistance;
     private int score;
+    public int TurnScore => score;
     private int totalScore;
+    public int TotalScore => totalScore;
     public Text scoreText;
     public int coinCounter = 3;
     public Text coinCounterText;
     public goldenCoin goldCoinScript;
+    public Vector2 startPosition;
+    public string playerName;
+    public GameManager gameManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         scoreText.text = "Score: " + score;
         coinCounterText.text = "Coins: " + coinCounter;
         rb.bodyType = RigidbodyType2D.Static;
@@ -36,6 +41,10 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!canPlay)
+        {
+            return;
+        }
         if (Touchscreen.current == null)
         {
             return;
@@ -107,32 +116,75 @@ public class playerMovement : MonoBehaviour
         if (rb.linearVelocity.magnitude < stopSpeed && isMoving)
         {
             Debug.Log("RED PLAYER STOPPED!");
-            isMoving = false;
-            string finalZone = FinalZone();
-            bool isGoldCoinSafe = goldCoinScript.IsGoldCoinSafe();
-            bool isCollidedWithPlayer = goldCoinScript.hasCollidedWithPlayer;
-            
-            /*Debug.Log("Final Zone: " + finalZone);
-            Debug.Log("Is Gold Coin in 80: " + isGoldCoinSafe);
-            Debug.Log("Collision with a player: " + isCollidedWithPlayer);*/
-            
-            if (isGoldCoinSafe && isCollidedWithPlayer && finalZone == "80")
-            {
-                CalculateScore("100");
-            }
-            else if ((isGoldCoinSafe && isCollidedWithPlayer && finalZone != "80") || (isGoldCoinSafe && !isCollidedWithPlayer))
-            {
-                CalculateScore(finalZone);
-            }
-            else if ((isCollidedWithPlayer && !isGoldCoinSafe) || finalZone == "Unknown")
-            {
-                CalculateScore("Negative");
-                goldCoinScript.ResetGoldCoinPosition(new Vector2(0, 0), 0f);
-                Debug.Log("Condition: Collided with player but gold coin is not in 80 zone. Gold coin reset to (0,0)");
-            }
-
-            rb.position = new Vector2(0, -20);
+            PlayerStopped();
         }
+    }
+
+    public void PlayerStopped()
+    {
+        isMoving = false;
+        canPlay = false;
+        UpdateTurnScore();
+        coinCounter--;
+        coinCounterText.text = "Coins: " + coinCounter;
+        gameManager.PlayerFinishedTurn(this);
+    }
+
+    public void UpdateTurnScore()
+    {
+        string finalZone = FinalZone();
+
+        bool isGoldCoinSafe = goldCoinScript.IsGoldCoinSafe();
+
+        bool isCollidedWithPlayer = goldCoinScript.hasCollidedWithPlayer;
+
+        if (isGoldCoinSafe && isCollidedWithPlayer && finalZone == "80")
+        {
+            CalculateScore("100");
+        }
+        else if (
+            (isGoldCoinSafe && isCollidedWithPlayer && finalZone != "80") ||
+            (isGoldCoinSafe && !isCollidedWithPlayer)
+        )
+        {
+            CalculateScore(finalZone);
+        }
+        else if (
+            (isCollidedWithPlayer && !isGoldCoinSafe) ||
+            finalZone == "Unknown"
+        )
+        {
+            CalculateScore("Negative");
+        }
+    }
+
+    public void StartPlayerTurn()
+    {
+        canPlay = true;
+        rb.bodyType = RigidbodyType2D.Static;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        isMoving = false;
+        isTouchingPlayer = false;
+    }
+
+    public void ResetCoin()
+    {
+        rb.position = startPosition;
+        rb.bodyType = RigidbodyType2D.Static;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        isMoving = false;
+        isTouchingPlayer = false;
+        coinCounter = 3;
+        coinCounterText.text = "Coins: " + coinCounter;
+    }
+
+    public void FinalizeTurnScore()
+    {
+        totalScore += score;
+        scoreText.text = "Score: " + totalScore;
+        score = 0;
     }
 
     public string FinalZone()
@@ -196,10 +248,5 @@ public class playerMovement : MonoBehaviour
                 score -= 30;
                 break;
         }
-
-        totalScore += score;
-        scoreText.text = "Score: " + totalScore;
-        coinCounter--;
-        coinCounterText.text = "Coins: " + coinCounter;
     }
 }
