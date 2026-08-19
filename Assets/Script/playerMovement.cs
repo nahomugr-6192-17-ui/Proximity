@@ -15,13 +15,25 @@ public class playerMovement : MonoBehaviour
     public Vector2 dragVector;
     public Vector2 shotDirection;
     public float shotDistance;
-    private int score;
-    public int TurnScore => score;
+    private int[] turnScores = new int[3];
+
     private int totalScore;
     public int TotalScore => totalScore;
-    public Text scoreText;
-    public int coinCounter = 3;
-    public Text coinCounterText;
+
+    public int CurrentRoundScore
+    {
+        get
+        {
+            int total = 0;
+
+            for (int i = 0; i < turnScores.Length; i++)
+            {
+                total += turnScores[i];
+            }
+
+            return total;
+        }
+    }
     public goldenCoin goldCoinScript;
     public Vector2 startPosition;
     public string playerName;
@@ -29,8 +41,7 @@ public class playerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        scoreText.text = "Score: " + score;
-        coinCounterText.text = "Coins: " + coinCounter;
+        // scoreText.text = "Score: " + score;
         rb.bodyType = RigidbodyType2D.Static;
         aimLine.positionCount = 2;
         aimLine.enabled = false;
@@ -52,11 +63,6 @@ public class playerMovement : MonoBehaviour
 
         if (Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
-            if (coinCounter <= 0)
-            {
-                coinCounterText.text = "Coins: 0";
-                return;
-            }
             Vector2 touchPosition =
                 Touchscreen.current.primaryTouch.position.ReadValue();
 
@@ -124,38 +130,49 @@ public class playerMovement : MonoBehaviour
     {
         isMoving = false;
         canPlay = false;
-        UpdateTurnScore();
-        coinCounter--;
-        coinCounterText.text = "Coins: " + coinCounter;
         gameManager.PlayerFinishedTurn(this);
     }
 
-    public void UpdateTurnScore()
+    public int CalculateCurrentScore()
     {
         string finalZone = FinalZone();
 
-        bool isGoldCoinSafe = goldCoinScript.IsGoldCoinSafe();
+        bool isGoldCoinSafe =
+            goldCoinScript.IsGoldCoinSafe();
 
-        bool isCollidedWithPlayer = goldCoinScript.hasCollidedWithPlayer;
+        bool isCollidedWithPlayer =
+            goldCoinScript.hasCollidedWithPlayer;
 
-        if (isGoldCoinSafe && isCollidedWithPlayer && finalZone == "80")
+        if (isGoldCoinSafe &&
+            isCollidedWithPlayer &&
+            finalZone == "80")
         {
-            CalculateScore("100");
+            return GetZoneScore("100");
         }
-        else if (
-            (isGoldCoinSafe && isCollidedWithPlayer && finalZone != "80") ||
-            (isGoldCoinSafe && !isCollidedWithPlayer)
+
+        if (
+            (isGoldCoinSafe &&
+             isCollidedWithPlayer &&
+             finalZone != "80") ||
+
+            (isGoldCoinSafe &&
+             !isCollidedWithPlayer)
         )
         {
-            CalculateScore(finalZone);
+            return GetZoneScore(finalZone);
         }
-        else if (
-            (isCollidedWithPlayer && !isGoldCoinSafe) ||
+
+        if (
+            (isCollidedWithPlayer &&
+             !isGoldCoinSafe) ||
+
             finalZone == "Unknown"
         )
         {
-            CalculateScore("Negative");
+            return GetZoneScore("Negative");
         }
+
+        return 0;
     }
 
     public void StartPlayerTurn()
@@ -176,15 +193,21 @@ public class playerMovement : MonoBehaviour
         rb.angularVelocity = 0f;
         isMoving = false;
         isTouchingPlayer = false;
-        coinCounter = 3;
-        coinCounterText.text = "Coins: " + coinCounter;
     }
 
-    public void FinalizeTurnScore()
+    public void FinalizeRoundScore()
     {
-        totalScore += score;
-        scoreText.text = "Score: " + totalScore;
-        score = 0;
+        totalScore += CurrentRoundScore;
+
+        ResetTurnScores();
+    }
+
+    public void ResetTurnScores()
+    {
+        for (int i = 0; i < turnScores.Length; i++)
+        {
+            turnScores[i] = 0;
+        }
     }
 
     public string FinalZone()
@@ -214,39 +237,55 @@ public class playerMovement : MonoBehaviour
         return "Unknown";
     }
 
-    public void CalculateScore(string finalZone)
+    public int GetZoneScore(string finalZone)
     {
-        score = 0;
         switch (finalZone)
         {
             case "100":
-                score += 100;
-                break;
+                return 100;
+
             case "80":
-                score += 80;
-                break;
+                return 80;
 
             case "60":
-                score += 60;
-                break;
+                return 60;
 
             case "40":
-                score += 40;
-                break;
+                return 40;
 
             case "20":
-                score += 20;
-                break;
+                return 20;
 
             case "Survival":
-                score += 0;
-                break;
+                return 0;
+
             case "Unknown":
-                score -= 50;
-                break;
+                return -50;
+
             case "Negative":
-                score -= 30;
-                break;
+                return -30;
         }
+
+        return 0;
+    }
+
+    public void SetTurnScore(int turnIndex, int newScore)
+    {
+        if (turnIndex < 0 || turnIndex >= turnScores.Length)
+        {
+            return;
+        }
+
+        turnScores[turnIndex] = newScore;
+    }
+
+    public int GetTurnScore(int turnIndex)
+    {
+        if (turnIndex < 0 || turnIndex >= turnScores.Length)
+        {
+            return 0;
+        }
+
+        return turnScores[turnIndex];
     }
 }

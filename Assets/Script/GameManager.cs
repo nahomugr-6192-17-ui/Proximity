@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour
     public playerMovement greenPlayer;
     public playerMovement bluePlayer;
     public playerMovement purplePlayer;
+    public int coinCounter = 3;
+    public Text coinCounterText;
     public GameScoreUI gameScoreUI;
     public CameraController cameraController;
     private List<playerMovement> activePlayers = new List<playerMovement>();
@@ -112,6 +115,8 @@ public class GameManager : MonoBehaviour
 
         // Reset every player's coin
         ResetAllCoins();
+        coinCounter--;
+        coinCounterText.text = "Coins: " + coinCounter;
 
         if (currentTurn < turnsPerRound)
         {

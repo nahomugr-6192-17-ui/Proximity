@@ -23,15 +23,25 @@ public class CameraController : MonoBehaviour
 
     public void RotateToPlayer(playerMovement player)
     {
-        Vector2 direction =
-            player.transform.position - boardCenter.position;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // Makes the current player appear at the bottom of the screen.
-        float cameraAngle = angle + 90f;
-
-        targetRotation =
-            Quaternion.Euler(0f, 0f, cameraAngle);
+        if (player.playerName == "Red")
+        {
+            transform.position = new Vector3(0f, -9.8f, -10f);
+            targetRotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+        else if (player.playerName == "Blue")
+        {
+            transform.position = new Vector3(-9.8f, 0f, -10f);
+            targetRotation = Quaternion.Euler(0f, 0f, 270f);
+        }
+        else if (player.playerName == "Green")
+        {
+            transform.position = new Vector3(0f, 9.8f, -10f);
+            targetRotation = Quaternion.Euler(0f, 0f, 180f);
+        }
+        else if (player.playerName == "Purple")
+        {
+            transform.position = new Vector3(9.8f, 0f, -10f);
+            targetRotation = Quaternion.Euler(0f, 0f, 90f);
+        }
     }
 }
