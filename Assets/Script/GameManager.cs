@@ -55,11 +55,15 @@ public class GameManager : MonoBehaviour
     void StartTurn()
     {
         Debug.Log("--------------------------------");
-        Debug.Log(
-            "ROUND " + currentRound +
-            " | TURN " + currentTurn + " STARTED"
-        );
+        Debug.Log("ROUND " + currentRound + " | TURN " + currentTurn + " STARTED");
         Debug.Log("--------------------------------");
+
+        foreach (playerMovement player in activePlayers)
+        {
+            player.ResetForNewTurn();
+        }
+
+        gameScoreUI.UpdateScores(redPlayer, bluePlayer, purplePlayer, greenPlayer);
 
         currentPlayerIndex = 0;
         StartNextPlayer();
@@ -127,13 +131,14 @@ public class GameManager : MonoBehaviour
     {
         foreach (playerMovement player in activePlayers)
         {
-            int newScore = player.CalculateCurrentScore();
+            int newScore =
+                player.CalculateCurrentScore();
 
             player.UpdateCurrentScore(newScore);
 
             Debug.Log(
                 player.playerName +
-                " | Current Score = " +
+                " Current Score = " +
                 player.CurrentScore +
                 " | Total Score = " +
                 player.TotalScore
@@ -151,26 +156,24 @@ public class GameManager : MonoBehaviour
 
     void EndTurn()
     {
-        Debug.Log(
-            "TURN " + currentTurn + " FINISHED"
-        );
+        Debug.Log("TURN " + currentTurn + " FINISHED");
 
-        // Scores have already been updated
-        // after every player's shot.
+        foreach (playerMovement player in activePlayers)
+        {
+            player.CommitCurrentScoreToTotal();
+        }
+
+        gameScoreUI.UpdateScores(redPlayer, bluePlayer, purplePlayer, greenPlayer);
 
         ResetAllCoins();
-
         goldCoinScript.ResetToStartPosition();
 
         coinCounter--;
-
-        coinCounterText.text =
-            "Coins: " + coinCounter;
+        coinCounterText.text = "Coins: " + coinCounter;
 
         if (currentTurn < turnsPerRound)
         {
             currentTurn++;
-
             StartTurn();
         }
         else
@@ -179,23 +182,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void CalculateTurnScores()
-    {
-        foreach (playerMovement player in activePlayers)
-        {
-            int score = player.CalculateCurrentScore();
-
-            player.UpdateCurrentScore(score);
-
-            Debug.Log(
-                player.playerName +
-                " FINAL SCORE FOR TURN " +
-                currentTurn +
-                " = " +
-                score
-            );
-        }
-    }
     void EndRound()
     {
         Debug.Log("================================");

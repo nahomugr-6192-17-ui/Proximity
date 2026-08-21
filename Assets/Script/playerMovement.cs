@@ -26,10 +26,12 @@ public class playerMovement : MonoBehaviour
     private int totalScore;
 
     public int TotalScore => totalScore;
+    public int DisplayScore => totalScore + currentScore;
     public goldenCoin goldCoinScript;
     public Vector2 startPosition;
     public string playerName;
     public GameManager gameManager;
+    private bool hasTakenShot = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -103,6 +105,7 @@ public class playerMovement : MonoBehaviour
         }
         if (Touchscreen.current.primaryTouch.press.wasReleasedThisFrame && isTouchingPlayer)
         {
+            hasTakenShot = true;
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.AddForce(shotDirection * shotDistance * pushForce, ForceMode2D.Impulse);
             isTouchingPlayer = false;
@@ -125,17 +128,31 @@ public class playerMovement : MonoBehaviour
     }
     public void UpdateCurrentScore(int newScore)
     {
-        // Find how much the score changed.
-        int scoreDifference = newScore - currentScore;
-
-        // Update the player's current board score.
+        // Purely reflects this turn's live position. No totalScore involvement.
         currentScore = newScore;
-
-        // Apply only the difference to the accumulated score.
-        totalScore += scoreDifference;
     }
+
+    // Called once per player, once per turn, when the turn ends.
+    public void CommitCurrentScoreToTotal()
+    {
+        totalScore += currentScore;
+        currentScore = 0;
+    }
+
+    // Called once per player, once per turn, when the NEW turn begins.
+    public void ResetForNewTurn()
+    {
+        hasTakenShot = false;
+        currentScore = 0; // safety; should already be 0 post-commit
+    }
+
     public int CalculateCurrentScore()
     {
+        if (!hasTakenShot)
+        {
+            return 0;
+        }
+
         string finalZone = FinalZone();
 
         bool goldCoinSafe =
@@ -206,25 +223,7 @@ public class playerMovement : MonoBehaviour
     {
         totalScore = 0;
         currentScore = 0;
-    }
-
-    public int DisplayScore
-    {
-        get
-        {
-            return totalScore + currentScore;
-        }
-    }
-
-    public void SetCurrentScore(int score)
-    {
-        currentScore = score;
-    }
-
-    public void CommitCurrentScore()
-    {
-        totalScore += currentScore;
-        currentScore = 0;
+        hasTakenShot = false;
     }
 
     public string FinalZone()

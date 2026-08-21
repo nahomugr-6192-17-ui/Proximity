@@ -14,9 +14,9 @@ public class GameScoreUI : MonoBehaviour
         playerMovement purple,
         playerMovement green)
     {
-        redScoreText.text = "R = " + red.TotalScore;
-        blueScoreText.text = "B = " + blue.TotalScore;
-        purpleScoreText.text = "P = " + purple.TotalScore;
-        greenScoreText.text = "G = " + green.TotalScore;
+        redScoreText.text = "R = " + red.DisplayScore;
+        blueScoreText.text = "B = " + blue.DisplayScore;
+        purpleScoreText.text = "P = " + purple.DisplayScore;
+        greenScoreText.text = "G = " + green.DisplayScore;
     }
 }
