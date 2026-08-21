@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     private int currentPlayerIndex = 0;
     private int currentTurn = 1;
     private int currentRound = 1;
-
+    public Text roundCounterText;
     private const int turnsPerRound = 3;
     private bool isFirstPlayerOfGame = true;
 
@@ -196,7 +196,16 @@ public class GameManager : MonoBehaviour
         // Elimination will happen here.
         // Next-round order will happen here.
 
+        coinCounter = 3;
+        coinCounterText.text = "Coins: " + coinCounter;
         currentRound++;
+        roundCounterText.text = "Round: " + currentRound;
+
+        if (currentRound >= 3)
+        {
+            Debug.Log("GAME OVER");
+            return;
+        }
 
         StartRound();
     }
