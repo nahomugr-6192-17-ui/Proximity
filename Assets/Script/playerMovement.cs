@@ -15,25 +15,17 @@ public class playerMovement : MonoBehaviour
     public Vector2 dragVector;
     public Vector2 shotDirection;
     public float shotDistance;
-    private int[] turnScores = new int[3];
+    // Score based on the player's CURRENT position.
+    private int currentScore;
 
+    public int CurrentScore => currentScore;
+
+
+    // Accumulated score for the round.
+    // THIS is what the UI will display.
     private int totalScore;
+
     public int TotalScore => totalScore;
-
-    public int CurrentRoundScore
-    {
-        get
-        {
-            int total = 0;
-
-            for (int i = 0; i < turnScores.Length; i++)
-            {
-                total += turnScores[i];
-            }
-
-            return total;
-        }
-    }
     public goldenCoin goldCoinScript;
     public Vector2 startPosition;
     public string playerName;
@@ -111,7 +103,6 @@ public class playerMovement : MonoBehaviour
         }
         if (Touchscreen.current.primaryTouch.press.wasReleasedThisFrame && isTouchingPlayer)
         {
-            goldCoinScript.hasCollidedWithPlayer = false;
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.AddForce(shotDirection * shotDistance * pushForce, ForceMode2D.Impulse);
             isTouchingPlayer = false;
@@ -132,47 +123,63 @@ public class playerMovement : MonoBehaviour
         canPlay = false;
         gameManager.PlayerFinishedTurn(this);
     }
+    public void UpdateCurrentScore(int newScore)
+    {
+        // Find how much the score changed.
+        int scoreDifference = newScore - currentScore;
 
+        // Update the player's current board score.
+        currentScore = newScore;
+
+        // Apply only the difference to the accumulated score.
+        totalScore += scoreDifference;
+    }
     public int CalculateCurrentScore()
     {
         string finalZone = FinalZone();
 
-        bool isGoldCoinSafe =
+        bool goldCoinSafe =
             goldCoinScript.IsGoldCoinSafe();
 
-        bool isCollidedWithPlayer =
-            goldCoinScript.hasCollidedWithPlayer;
+        bool isLastGoldPlayer =
+            goldCoinScript.lastPlayerToTouchGold == this;
 
-        if (isGoldCoinSafe &&
-            isCollidedWithPlayer &&
-            finalZone == "80")
+        bool directGoldTouch =
+            goldCoinScript.lastGoldTouchWasDirectShot;
+
+        // =========================================
+        // LAST PLAYER TO TOUCH GOLD KNOCKED IT OUT
+        // =========================================
+
+        if (!goldCoinSafe && isLastGoldPlayer)
         {
-            return GetZoneScore("100");
+            return -30;
         }
 
-        if (
-            (isGoldCoinSafe &&
-             isCollidedWithPlayer &&
-             finalZone != "80") ||
+        // =========================================
+        // LAST PLAYER TO TOUCH GOLD
+        // =========================================
 
-            (isGoldCoinSafe &&
-             !isCollidedWithPlayer)
-        )
+        if (isLastGoldPlayer)
         {
-            return GetZoneScore(finalZone);
+            // Direct shot onto gold + player ends in 80
+            if (directGoldTouch && finalZone == "80")
+            {
+                return 100;
+            }
+
+            // Indirect collision with gold
+            if (!directGoldTouch)
+            {
+                return GetZoneScore(finalZone) + 20;
+            }
         }
 
-        if (
-            (isCollidedWithPlayer &&
-             !isGoldCoinSafe) ||
+        // =========================================
+        // NORMAL PLAYER SCORE
+        // =========================================
 
-            finalZone == "Unknown"
-        )
-        {
-            return GetZoneScore("Negative");
-        }
-
-        return 0;
+        return GetZoneScore(finalZone);
     }
 
     public void StartPlayerTurn()
@@ -195,19 +202,29 @@ public class playerMovement : MonoBehaviour
         isTouchingPlayer = false;
     }
 
-    public void FinalizeRoundScore()
+    public void ResetRoundScoreForNewRound()
     {
-        totalScore += CurrentRoundScore;
-
-        ResetTurnScores();
+        totalScore = 0;
+        currentScore = 0;
     }
 
-    public void ResetTurnScores()
+    public int DisplayScore
     {
-        for (int i = 0; i < turnScores.Length; i++)
+        get
         {
-            turnScores[i] = 0;
+            return totalScore + currentScore;
         }
+    }
+
+    public void SetCurrentScore(int score)
+    {
+        currentScore = score;
+    }
+
+    public void CommitCurrentScore()
+    {
+        totalScore += currentScore;
+        currentScore = 0;
     }
 
     public string FinalZone()
@@ -267,25 +284,5 @@ public class playerMovement : MonoBehaviour
         }
 
         return 0;
-    }
-
-    public void SetTurnScore(int turnIndex, int newScore)
-    {
-        if (turnIndex < 0 || turnIndex >= turnScores.Length)
-        {
-            return;
-        }
-
-        turnScores[turnIndex] = newScore;
-    }
-
-    public int GetTurnScore(int turnIndex)
-    {
-        if (turnIndex < 0 || turnIndex >= turnScores.Length)
-        {
-            return 0;
-        }
-
-        return turnScores[turnIndex];
     }
 }

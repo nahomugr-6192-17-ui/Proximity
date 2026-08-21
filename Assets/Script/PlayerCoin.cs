@@ -14,12 +14,26 @@ public class playerCoin : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Coin"))
+        goldenCoin goldCoin =
+            collision.gameObject.GetComponent<goldenCoin>();
+
+        if (goldCoin != null)
         {
-            Debug.Log(
-                owner.name + " coin collided with " +
-                collision.gameObject.name
+            bool directShot =
+                owner.gameManager.CurrentPlayer == owner;
+
+            goldCoin.SetLastPlayerToTouchGold(
+                owner,
+                directShot
             );
+
+            Debug.Log(
+                owner.playerName +
+                " touched gold. Direct shot = " +
+                directShot
+            );
+
+            return;
         }
     }
 }

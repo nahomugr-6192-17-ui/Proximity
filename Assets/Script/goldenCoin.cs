@@ -3,12 +3,24 @@ using UnityEngine;
 public class goldenCoin : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public playerMovement playerScript;
-    public bool hasCollidedWithPlayer = false;
+
+    // The player who most recently caused the gold coin
+    // to be touched.
+    public playerMovement lastPlayerToTouchGold;
+    public bool lastGoldTouchWasDirectShot;
+    private Vector2 startPosition;
+    private float startRotation;
+
+    private void Start()
+    {
+        startPosition = rb.position;
+        startRotation = rb.rotation;
+    }
 
     public bool IsGoldCoinSafe()
     {
-        Collider2D[] zones = Physics2D.OverlapPointAll(rb.position);
+        Collider2D[] zones =
+            Physics2D.OverlapPointAll(rb.position);
 
         foreach (Collider2D zone in zones)
         {
@@ -17,23 +29,34 @@ public class goldenCoin : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
 
-    public void ResetGoldCoinPosition(Vector2 newPosition, float newRotation)
+    public void SetLastPlayerToTouchGold(
+        playerMovement player,
+        bool directShot)
+    {
+        lastPlayerToTouchGold = player;
+
+        lastGoldTouchWasDirectShot = directShot;
+
+        Debug.Log(
+            player.playerName +
+            " is now the last player to touch gold. Direct Shot = " +
+            directShot
+        );
+    }
+
+    public void ResetToStartPosition()
     {
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
-        rb.transform.position = newPosition;
-        rb.rotation = newRotation;
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Coin"))
-        {
-            hasCollidedWithPlayer = true;
-            Debug.Log("Gold Coin collided with a player!");
-        }
+        rb.position = startPosition;
+        rb.rotation = startRotation;
+
+        lastPlayerToTouchGold = null;
+        lastGoldTouchWasDirectShot = false;
     }
 }

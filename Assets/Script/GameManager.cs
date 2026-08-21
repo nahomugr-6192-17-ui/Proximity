@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Text coinCounterText;
     public GameScoreUI gameScoreUI;
     public CameraController cameraController;
+    public goldenCoin goldCoinScript;
     private List<playerMovement> activePlayers = new List<playerMovement>();
     private List<playerMovement> turnOrder = new List<playerMovement>();
 
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     private int currentRound = 1;
 
     private const int turnsPerRound = 3;
+    private bool isFirstPlayerOfGame = true;
 
 
     void Start()
@@ -60,7 +62,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("--------------------------------");
 
         currentPlayerIndex = 0;
-
         StartNextPlayer();
     }
 
@@ -82,11 +83,15 @@ public class GameManager : MonoBehaviour
             currentPlayer.playerName
         );
 
-        cameraController.RotateToPlayer(currentPlayer);
+        cameraController.RotateToPlayer(
+            currentPlayer,
+            isFirstPlayerOfGame
+        );
+
+        isFirstPlayerOfGame = false;
 
         currentPlayer.StartPlayerTurn();
     }
-
 
     public void PlayerFinishedTurn(playerMovement player)
     {
@@ -94,45 +99,103 @@ public class GameManager : MonoBehaviour
             player.playerName +
             " FINISHED THEIR SHOT."
         );
+
+        // Recalculate all players because this shot
+        // may have moved other player coins.
+        RecalculateAllScores();
+
+        currentPlayerIndex++;
+
+        StartNextPlayer();
+    }
+
+    public playerMovement CurrentPlayer
+    {
+        get
+        {
+            if (currentPlayerIndex < 0 ||
+                currentPlayerIndex >= turnOrder.Count)
+            {
+                return null;
+            }
+
+            return turnOrder[currentPlayerIndex];
+        }
+    }
+
+    void RecalculateAllScores()
+    {
+        foreach (playerMovement player in activePlayers)
+        {
+            int newScore = player.CalculateCurrentScore();
+
+            player.UpdateCurrentScore(newScore);
+
+            Debug.Log(
+                player.playerName +
+                " | Current Score = " +
+                player.CurrentScore +
+                " | Total Score = " +
+                player.TotalScore
+            );
+        }
+
         gameScoreUI.UpdateScores(
             redPlayer,
             bluePlayer,
             purplePlayer,
             greenPlayer
         );
-        currentPlayerIndex++;
-
-        StartNextPlayer();
     }
 
 
     void EndTurn()
     {
         Debug.Log(
-            "TURN " + currentTurn +
-            " FINISHED"
+            "TURN " + currentTurn + " FINISHED"
         );
 
-        // Reset every player's coin
+        // Scores have already been updated
+        // after every player's shot.
+
         ResetAllCoins();
+
+        goldCoinScript.ResetToStartPosition();
+
         coinCounter--;
-        coinCounterText.text = "Coins: " + coinCounter;
+
+        coinCounterText.text =
+            "Coins: " + coinCounter;
 
         if (currentTurn < turnsPerRound)
         {
-            // There is another turn in this round.
             currentTurn++;
 
             StartTurn();
         }
         else
         {
-            // All 3 turns are complete.
             EndRound();
         }
     }
 
+    void CalculateTurnScores()
+    {
+        foreach (playerMovement player in activePlayers)
+        {
+            int score = player.CalculateCurrentScore();
 
+            player.UpdateCurrentScore(score);
+
+            Debug.Log(
+                player.playerName +
+                " FINAL SCORE FOR TURN " +
+                currentTurn +
+                " = " +
+                score
+            );
+        }
+    }
     void EndRound()
     {
         Debug.Log("================================");
@@ -142,13 +205,29 @@ public class GameManager : MonoBehaviour
         );
         Debug.Log("================================");
 
-        // We will add score processing here.
-        // We will add elimination here.
-        // We will add next-round ordering here.
+        // Add this round's scores to total scores.
+        ResetRoundScores();
+        // Elimination will happen here.
+        // Next-round order will happen here.
 
         currentRound++;
 
         StartRound();
+    }
+
+    void ResetRoundScores()
+    {
+        foreach (playerMovement player in activePlayers)
+        {
+            player.ResetRoundScoreForNewRound();
+        }
+
+        gameScoreUI.UpdateScores(
+            redPlayer,
+            bluePlayer,
+            purplePlayer,
+            greenPlayer
+        );
     }
 
 
