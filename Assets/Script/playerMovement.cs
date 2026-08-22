@@ -19,10 +19,6 @@ public class playerMovement : MonoBehaviour
     private int currentScore;
 
     public int CurrentScore => currentScore;
-
-
-    // Accumulated score for the round.
-    // THIS is what the UI will display.
     private int totalScore;
 
     public int TotalScore => totalScore;

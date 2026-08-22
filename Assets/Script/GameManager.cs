@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public playerMovement greenPlayer;
     public playerMovement bluePlayer;
     public playerMovement purplePlayer;
-    public int coinCounter = 3;
+    public int coinCounter = 2;
     public Text coinCounterText;
     public GameScoreUI gameScoreUI;
     public CameraController cameraController;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private int currentTurn = 1;
     private int currentRound = 1;
     public Text roundCounterText;
-    private const int turnsPerRound = 3;
+    private const int turnsPerRound = 2;
     private bool isFirstPlayerOfGame = true;
 
 
@@ -191,6 +191,7 @@ public class GameManager : MonoBehaviour
         );
         Debug.Log("================================");
 
+        Elimination();
         // Add this round's scores to total scores.
         ResetRoundScores();
         // Elimination will happen here.
@@ -261,5 +262,30 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log(player.playerName);
         }
+    }
+
+    void Elimination()
+    {
+        if (coinCounter > 1)
+        {
+            return;
+        }
+
+        if (activePlayers.Count <= 1)
+        {
+            return;
+        }
+
+        playerMovement lowestScoringPlayer = activePlayers[0];
+
+        foreach (playerMovement player in activePlayers)
+        {
+            if (player.TotalScore < lowestScoringPlayer.TotalScore && coinCounter <= 0)
+            {
+                lowestScoringPlayer = player;
+            }
+        }
+
+        activePlayers.Remove(lowestScoringPlayer);
     }
 }
