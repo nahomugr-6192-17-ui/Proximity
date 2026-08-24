@@ -295,10 +295,7 @@ public class GameManager : MonoBehaviour
                 lowestScoringPlayer = player;
             }
         }
-
         activePlayers.Remove(lowestScoringPlayer);
         Debug.Log("Player " + lowestScoringPlayer.playerName + " has been eliminated.");
-        lowestScoringPlayer.gameObject.SetActive(false);
-
     }
 }
