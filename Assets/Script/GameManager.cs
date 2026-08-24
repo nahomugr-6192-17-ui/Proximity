@@ -141,6 +141,8 @@ public class GameManager : MonoBehaviour
 
     void RecalculateAllScores()
     {
+        goldCoinScript.PlayerThatKnocksOutGoldCoin();
+
         foreach (playerMovement player in activePlayers)
         {
             int newScore =
@@ -295,6 +297,7 @@ public class GameManager : MonoBehaviour
 
         activePlayers.Remove(lowestScoringPlayer);
         Debug.Log("Player " + lowestScoringPlayer.playerName + " has been eliminated.");
-        activePlayers.Remove(lowestScoringPlayer.DisplayScore);
+        lowestScoringPlayer.gameObject.SetActive(false);
+
     }
 }

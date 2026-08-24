@@ -8,6 +8,7 @@ public class goldenCoin : MonoBehaviour
     // to be touched.
     public playerMovement lastPlayerToTouchGold;
     public bool lastGoldTouchWasDirectShot;
+    public playerMovement playerWhoKnockedOutGold;
     private Vector2 startPosition;
     private float startRotation;
 
@@ -45,6 +46,38 @@ public class goldenCoin : MonoBehaviour
             player.playerName +
             " is now the last player to touch gold. Direct Shot = " +
             directShot
+        );
+    }
+
+    public void PlayerThatKnocksOutGoldCoin()
+    {
+        // Nobody touched the gold coin.
+        if (lastPlayerToTouchGold == null)
+        {
+            return;
+        }
+
+        // Someone was already responsible.
+        // Never change the penalty owner.
+        if (playerWhoKnockedOutGold != null)
+        {
+            return;
+        }
+
+        // Gold is still safe.
+        if (IsGoldCoinSafe())
+        {
+            return;
+        }
+
+        // Lock the last player who touched gold
+        // at the exact moment gold became unsafe.
+        playerWhoKnockedOutGold =
+            lastPlayerToTouchGold;
+
+        Debug.Log(
+            playerWhoKnockedOutGold.playerName +
+            " permanently receives -30 for this turn."
         );
     }
 

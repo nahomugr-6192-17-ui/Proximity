@@ -164,7 +164,7 @@ public class playerMovement : MonoBehaviour
         // LAST PLAYER TO TOUCH GOLD KNOCKED IT OUT
         // =========================================
 
-        if (!goldCoinSafe && isLastGoldPlayer)
+        if (goldCoinScript.playerWhoKnockedOutGold == this)
         {
             return -30;
         }
