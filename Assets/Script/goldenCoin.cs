@@ -91,5 +91,6 @@ public class goldenCoin : MonoBehaviour
 
         lastPlayerToTouchGold = null;
         lastGoldTouchWasDirectShot = false;
+        
     }
 }

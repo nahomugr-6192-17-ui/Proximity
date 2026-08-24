@@ -181,6 +181,7 @@ public class GameManager : MonoBehaviour
 
         ResetAllCoins();
         goldCoinScript.ResetToStartPosition();
+        goldCoinScript.playerWhoKnockedOutGold = null;
 
         if (currentTurn < turnsPerRound)
         {
