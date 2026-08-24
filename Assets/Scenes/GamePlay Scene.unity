@@ -671,8 +671,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -224.96925, y: -779.1}
-  m_SizeDelta: {x: 247.4663, y: 66.0534}
+  m_AnchoredPosition: {x: -212.8666, y: -779.1}
+  m_SizeDelta: {x: 271.6716, y: 66.0534}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719179684
 MonoBehaviour:
@@ -707,7 +707,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'ROUND: 1'
+  m_Text: 'ROUND: '
 --- !u!222 &719179685
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3031,7 +3031,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'COINS: 3'
+  m_Text: 'COINS: '
 --- !u!4 &3452476674778703108
 Transform:
   m_ObjectHideFlags: 0

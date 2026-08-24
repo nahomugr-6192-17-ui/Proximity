@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private int currentPlayerIndex = 0;
     private int currentTurn = 1;
-    private int currentRound = 1;
+    public int currentRound = 1;
     public Text roundCounterText;
     private const int turnsPerRound = 2;
     private bool isFirstPlayerOfGame = true;
@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("================================");
         currentTurn = 1;
         ShuffleTurnOrder();
+        coinCounter = 2;
+        coinCounterText.text = "COINS: " + coinCounter;
+        roundCounterText.text = "ROUNDS: " + currentRound;
         StartTurn();
     }
 
@@ -94,6 +97,15 @@ public class GameManager : MonoBehaviour
 
         isFirstPlayerOfGame = false;
 
+        if (goldCoinScript.IsGoldCoinSafe())
+        {
+            Debug.Log("GOLD COIN IS SAFE");
+        }
+        else
+        {
+            Debug.Log("GOLD COIN IS NOT SAFE");
+            goldCoinScript.ResetToStartPosition();
+        }
         currentPlayer.StartPlayerTurn();
     }
 
@@ -168,12 +180,11 @@ public class GameManager : MonoBehaviour
         ResetAllCoins();
         goldCoinScript.ResetToStartPosition();
 
-        coinCounter--;
-        coinCounterText.text = "Coins: " + coinCounter;
-
         if (currentTurn < turnsPerRound)
         {
             currentTurn++;
+            coinCounter--;
+            coinCounterText.text = "COINS: " + coinCounter;
             StartTurn();
         }
         else
@@ -197,12 +208,12 @@ public class GameManager : MonoBehaviour
         // Elimination will happen here.
         // Next-round order will happen here.
 
-        coinCounter = 3;
-        coinCounterText.text = "Coins: " + coinCounter;
+        coinCounter = 2;
+        coinCounterText.text = "COINS: " + coinCounter;
         currentRound++;
-        roundCounterText.text = "Round: " + currentRound;
+        roundCounterText.text = "ROUNDS: " + currentRound;
 
-        if (currentRound >= 3)
+        if (currentRound > 4)
         {
             Debug.Log("GAME OVER");
             return;
@@ -266,16 +277,12 @@ public class GameManager : MonoBehaviour
 
     void Elimination()
     {
-        if (coinCounter > 1)
-        {
-            return;
-        }
-
         if (activePlayers.Count <= 1)
         {
+            Debug.Log("The Winner is: " + activePlayers[0].playerName);
             return;
         }
-
+        activePlayers.Sort((a, b) => a.TotalScore.CompareTo(b.TotalScore));
         playerMovement lowestScoringPlayer = activePlayers[0];
 
         foreach (playerMovement player in activePlayers)
@@ -287,5 +294,7 @@ public class GameManager : MonoBehaviour
         }
 
         activePlayers.Remove(lowestScoringPlayer);
+        Debug.Log("Player " + lowestScoringPlayer.playerName + " has been eliminated.");
+        activePlayers.Remove(lowestScoringPlayer.DisplayScore);
     }
 }
