@@ -269,6 +269,7 @@ MonoBehaviour:
   gameScoreUI: {fileID: 286451182}
   cameraController: {fileID: 519420033}
   goldCoinScript: {fileID: 7378627166878547501}
+  currentRound: 1
   roundCounterText: {fileID: 719179684}
 --- !u!4 &286451181
 Transform:
@@ -1359,6 +1360,7 @@ MonoBehaviour:
   startPosition: {x: 0, y: 22}
   playerName: Green
   gameManager: {fileID: 286451180}
+  isPlayerEliminated: 0
 --- !u!212 &1186007887
 SpriteRenderer:
   serializedVersion: 3
@@ -2038,6 +2040,7 @@ MonoBehaviour:
   startPosition: {x: 22, y: 0}
   playerName: Purple
   gameManager: {fileID: 286451180}
+  isPlayerEliminated: 0
 --- !u!212 &1777843849
 SpriteRenderer:
   serializedVersion: 3
@@ -2341,6 +2344,7 @@ MonoBehaviour:
   startPosition: {x: -22, y: 0}
   playerName: Blue
   gameManager: {fileID: 286451180}
+  isPlayerEliminated: 0
 --- !u!212 &1963436317
 SpriteRenderer:
   serializedVersion: 3
@@ -3491,6 +3495,7 @@ MonoBehaviour:
   rb: {fileID: 2980693701384788397}
   lastPlayerToTouchGold: {fileID: 0}
   lastGoldTouchWasDirectShot: 0
+  playerWhoKnockedOutGold: {fileID: 0}
 --- !u!114 &7545461633467926812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3855,6 +3860,7 @@ MonoBehaviour:
   startPosition: {x: 0, y: -22}
   playerName: Red
   gameManager: {fileID: 286451180}
+  isPlayerEliminated: 0
 --- !u!1 &8195380578598575798
 GameObject:
   m_ObjectHideFlags: 0
