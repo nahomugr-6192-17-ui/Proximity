@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("ROUND " + currentRound + " STARTED");
         Debug.Log("================================");
         currentTurn = 1;
-        ShuffleTurnOrder();
         coinCounter = 2;
         coinCounterText.text = "COINS: " + coinCounter;
         roundCounterText.text = "ROUNDS: " + currentRound;
@@ -60,6 +59,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("--------------------------------");
         Debug.Log("ROUND " + currentRound + " | TURN " + currentTurn + " STARTED");
         Debug.Log("--------------------------------");
+        CreateTurnOrder();
 
         foreach (playerMovement player in activePlayers)
         {
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
         playerMovement currentPlayer =
             turnOrder[currentPlayerIndex];
-    
+
         Debug.Log(
             "Round " + currentRound +
             " | Turn " + currentTurn +
@@ -275,6 +275,34 @@ public class GameManager : MonoBehaviour
         foreach (playerMovement player in turnOrder)
         {
             Debug.Log(player.playerName);
+        }
+    }
+
+    void CreateTurnOrder()
+    {
+        // FIRST TURN OF THE ENTIRE GAME:
+        // Random order.
+        if (currentRound == 1 && currentTurn == 1)
+        {
+            ShuffleTurnOrder();
+            return;
+        }
+
+        // EVERY TURN AFTER THE FIRST:
+        // Lowest score shoots first.
+        turnOrder = new List<playerMovement>(activePlayers);
+
+        turnOrder.Sort(
+            (a, b) => a.TotalScore.CompareTo(b.TotalScore)
+        );
+
+        foreach (playerMovement player in turnOrder)
+        {
+            Debug.Log(
+                player.playerName +
+                " | Score: " +
+                player.TotalScore
+            );
         }
     }
 
