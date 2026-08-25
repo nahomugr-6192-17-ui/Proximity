@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
         playerMovement currentPlayer =
             turnOrder[currentPlayerIndex];
-
+    
         Debug.Log(
             "Round " + currentRound +
             " | Turn " + currentTurn +
@@ -295,6 +295,7 @@ public class GameManager : MonoBehaviour
                 lowestScoringPlayer = player;
             }
         }
+        lowestScoringPlayer.isPlayerEliminated = true;
         activePlayers.Remove(lowestScoringPlayer);
         Debug.Log("Player " + lowestScoringPlayer.playerName + " has been eliminated.");
     }

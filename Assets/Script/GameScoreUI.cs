@@ -18,5 +18,22 @@ public class GameScoreUI : MonoBehaviour
         blueScoreText.text = "B = " + blue.DisplayScore;
         purpleScoreText.text = "P = " + purple.DisplayScore;
         greenScoreText.text = "G = " + green.DisplayScore;
+
+        if (red.isPlayerEliminated)
+        {
+            redScoreText.text = " ";
+        }
+        if (blue.isPlayerEliminated)
+        {
+            blueScoreText.text = " ";
+        }
+        if (purple.isPlayerEliminated)
+        {
+            purpleScoreText.text = " ";
+        }
+        if (green.isPlayerEliminated)
+        {
+            greenScoreText.text = " ";
+        }
     }
 }

@@ -28,6 +28,7 @@ public class playerMovement : MonoBehaviour
     public string playerName;
     public GameManager gameManager;
     private bool hasTakenShot = false;
+    public bool isPlayerEliminated = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
