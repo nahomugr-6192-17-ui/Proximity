@@ -29,22 +29,22 @@ public class CameraController : MonoBehaviour
 
         if (player.playerName == "Red")
         {
-            targetPosition = new Vector3(0f, -9.8f, -10f);
+            targetPosition = new Vector3(0f, -10.3f, -10f);
             targetRotation = Quaternion.Euler(0f, 0f, 0f);
         }
         else if (player.playerName == "Blue")
         {
-            targetPosition = new Vector3(-9.8f, 0f, -10f);
+            targetPosition = new Vector3(-10.3f, 0f, -10f);
             targetRotation = Quaternion.Euler(0f, 0f, 270f);
         }
         else if (player.playerName == "Green")
         {
-            targetPosition = new Vector3(0f, 9.8f, -10f);
+            targetPosition = new Vector3(0f, 10.3f, -10f);
             targetRotation = Quaternion.Euler(0f, 0f, 180f);
         }
         else if (player.playerName == "Purple")
         {
-            targetPosition = new Vector3(9.8f, 0f, -10f);
+            targetPosition = new Vector3(10.3f, 0f, -10f);
             targetRotation = Quaternion.Euler(0f, 0f, 90f);
         }
 

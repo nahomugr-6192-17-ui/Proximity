@@ -12,11 +12,12 @@ TagManager:
   - 100
   - Floor
   - Coin
+  - EndGame
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ScoreDisplay
   - Water
   - UI
   - 
@@ -48,6 +49,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: ScoreDisplay
+    uniqueID: 3512694591
     locked: 0
   - name: 100 Coin
     uniqueID: 3614346633
