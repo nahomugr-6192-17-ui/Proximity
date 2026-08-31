@@ -48,8 +48,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("================================");
         currentTurn = 1;
         coinCounter = 2;
-        coinCounterText.text = "COINS: " + coinCounter;
-        roundCounterText.text = "ROUNDS: " + currentRound;
+        coinCounterText.text = coinCounter.ToString();
+        roundCounterText.text = currentRound + " / 3";
         StartTurn();
     }
 
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         {
             currentTurn++;
             coinCounter--;
-            coinCounterText.text = "COINS: " + coinCounter;
+            coinCounterText.text = coinCounter.ToString();
             StartTurn();
         }
         else
@@ -212,9 +212,9 @@ public class GameManager : MonoBehaviour
         // Next-round order will happen here.
 
         coinCounter = 2;
-        coinCounterText.text = "COINS: " + coinCounter;
+        coinCounterText.text = coinCounter.ToString();
         currentRound++;
-        roundCounterText.text = "ROUNDS: " + currentRound;
+        roundCounterText.text = currentRound + " / 3";
 
         if (currentRound > 4)
         {
