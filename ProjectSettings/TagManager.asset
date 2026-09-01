@@ -16,6 +16,7 @@ TagManager:
   - 2 Players
   - 3 Players
   - 4 Players
+  - WinnerCoin
   layers:
   - Default
   - TransparentFX

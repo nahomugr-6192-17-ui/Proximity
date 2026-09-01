@@ -232,26 +232,24 @@ public class GameManager : MonoBehaviour
         {
             if (activePlayers.Count == 1)
             {
-                if (activePlayers[0].CompareTag("Red"))
+                if (activePlayers[0].CompareTag("RedPlayer"))
                 {
                     winnerName = "Red Player";
                 }
-                else if (activePlayers[0].CompareTag("Blue"))
+                else if (activePlayers[0].CompareTag("BluePlayer"))
                 {
                     winnerName = "Blue Player";
                 }
-                else if (activePlayers[0].CompareTag("Green"))
+                else if (activePlayers[0].CompareTag("GreenPlayer"))
                 {
                     winnerName = "Green Player";
                 }
-                else if (activePlayers[0].CompareTag("Purple"))
+                else if (activePlayers[0].CompareTag("PurplePlayer"))
                 {
                     winnerName = "Purple Player";
                 }
-                SceneManager.LoadScene(
-                    SceneManager.GetActiveScene().buildIndex + 1
-                );
             }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             return;
         }
 
@@ -259,15 +257,15 @@ public class GameManager : MonoBehaviour
         {
             if (activePlayers.Count == 1)
             {
-                if (activePlayers[0].CompareTag("Red"))
+                if (activePlayers[0].CompareTag("RedPlayer"))
                 {
                     winnerName = "Red Player";
                 }
-                else if (activePlayers[0].CompareTag("Blue"))
+                else if (activePlayers[0].CompareTag("BluePlayer"))
                 {
                     winnerName = "Blue Player";
                 }
-                else if (activePlayers[0].CompareTag("Purple"))
+                else if (activePlayers[0].CompareTag("PurplePlayer"))
                 {
                     winnerName = "Purple Player";
                 }
