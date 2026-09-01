@@ -13,6 +13,9 @@ TagManager:
   - Floor
   - Coin
   - EndGame
+  - 2 Players
+  - 3 Players
+  - 4 Players
   layers:
   - Default
   - TransparentFX

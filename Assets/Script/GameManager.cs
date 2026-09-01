@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static int selectedPlayersCount = 4;
     [Header("Players")]
     public playerMovement redPlayer;
     public playerMovement greenPlayer;
@@ -14,8 +16,8 @@ public class GameManager : MonoBehaviour
     public GameScoreUI gameScoreUI;
     public CameraController cameraController;
     public goldenCoin goldCoinScript;
-    private List<playerMovement> activePlayers = new List<playerMovement>();
-    private List<playerMovement> turnOrder = new List<playerMovement>();
+    public List<playerMovement> activePlayers = new List<playerMovement>();
+    public List<playerMovement> turnOrder = new List<playerMovement>();
 
     private int currentPlayerIndex = 0;
     private int currentTurn = 1;
@@ -23,20 +25,30 @@ public class GameManager : MonoBehaviour
     public Text roundCounterText;
     private const int turnsPerRound = 2;
     private bool isFirstPlayerOfGame = true;
+    public static string winnerName;
 
 
     void Start()
     {
+        activePlayers.Clear();
+
+        // Red and Blue are always playing.
         activePlayers.Add(redPlayer);
-        activePlayers.Add(greenPlayer);
         activePlayers.Add(bluePlayer);
         activePlayers.Add(purplePlayer);
+
+        if (selectedPlayersCount == 4)
+        {
+            activePlayers.Add(greenPlayer);
+        }
+
         gameScoreUI.UpdateScores(
             redPlayer,
             bluePlayer,
             purplePlayer,
             greenPlayer
         );
+
         StartRound();
     }
 
@@ -216,9 +228,53 @@ public class GameManager : MonoBehaviour
         currentRound++;
         roundCounterText.text = "ROUNDS: " + currentRound;
 
-        if (currentRound > 4)
+        if (selectedPlayersCount == 4 && currentRound > 4)
         {
-            Debug.Log("GAME OVER");
+            if (activePlayers.Count == 1)
+            {
+                if (activePlayers[0].CompareTag("Red"))
+                {
+                    winnerName = "Red Player";
+                }
+                else if (activePlayers[0].CompareTag("Blue"))
+                {
+                    winnerName = "Blue Player";
+                }
+                else if (activePlayers[0].CompareTag("Green"))
+                {
+                    winnerName = "Green Player";
+                }
+                else if (activePlayers[0].CompareTag("Purple"))
+                {
+                    winnerName = "Purple Player";
+                }
+                SceneManager.LoadScene(
+                    SceneManager.GetActiveScene().buildIndex + 1
+                );
+            }
+            return;
+        }
+
+        if (selectedPlayersCount == 3 && currentRound > 3)
+        {
+            if (activePlayers.Count == 1)
+            {
+                if (activePlayers[0].CompareTag("Red"))
+                {
+                    winnerName = "Red Player";
+                }
+                else if (activePlayers[0].CompareTag("Blue"))
+                {
+                    winnerName = "Blue Player";
+                }
+                else if (activePlayers[0].CompareTag("Purple"))
+                {
+                    winnerName = "Purple Player";
+                }
+                SceneManager.LoadScene(
+                    SceneManager.GetActiveScene().buildIndex + 1
+                );
+            }
             return;
         }
 

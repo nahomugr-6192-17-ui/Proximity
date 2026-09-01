@@ -152,9 +152,6 @@ public class playerMovement : MonoBehaviour
 
         string finalZone = FinalZone();
 
-        bool goldCoinSafe =
-            goldCoinScript.IsGoldCoinSafe();
-
         bool isLastGoldPlayer =
             goldCoinScript.lastPlayerToTouchGold == this;
 

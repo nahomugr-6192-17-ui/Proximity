@@ -14,10 +14,21 @@ public class GameScoreUI : MonoBehaviour
         playerMovement purple,
         playerMovement green)
     {
-        redScoreText.text = "R = " + red.DisplayScore;
-        blueScoreText.text = "B = " + blue.DisplayScore;
-        purpleScoreText.text = "P = " + purple.DisplayScore;
-        greenScoreText.text = "G = " + green.DisplayScore;
+        if (GameManager.selectedPlayersCount == 4)
+        {
+            redScoreText.text = "R = " + red.DisplayScore;
+            blueScoreText.text = "B = " + blue.DisplayScore;
+            purpleScoreText.text = "P = " + purple.DisplayScore;
+            greenScoreText.text = "G = " + green.DisplayScore;
+        }
+
+        if (GameManager.selectedPlayersCount == 3)
+        {
+            redScoreText.text = "R = " + red.DisplayScore;
+            blueScoreText.text = "B = " + blue.DisplayScore;
+            purpleScoreText.text = "P = " + purple.DisplayScore;
+            greenScoreText.text = " ";
+        }
 
         if (red.isPlayerEliminated)
         {

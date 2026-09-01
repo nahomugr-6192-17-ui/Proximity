@@ -230,78 +230,6 @@ Transform:
   - {fileID: 1963436313}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &286451179
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 286451181}
-  - component: {fileID: 286451180}
-  - component: {fileID: 286451182}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &286451180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286451179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59cd739260af27b408b3a8f1c4469f6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  redPlayer: {fileID: 7987208686208751726}
-  greenPlayer: {fileID: 1186007886}
-  bluePlayer: {fileID: 1963436316}
-  purplePlayer: {fileID: 1777843848}
-  coinCounter: 3
-  coinCounterText: {fileID: 3376405944941238704}
-  gameScoreUI: {fileID: 286451182}
-  cameraController: {fileID: 519420033}
-  goldCoinScript: {fileID: 7378627166878547501}
-  currentRound: 1
-  roundCounterText: {fileID: 719179684}
---- !u!4 &286451181
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286451179}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.9, y: -28.9, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &286451182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286451179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28811fb75d5497a46a380d1a2d3fd90e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  redScoreText: {fileID: 1084537925}
-  blueScoreText: {fileID: 6758004}
-  purpleScoreText: {fileID: 1431436339}
-  greenScoreText: {fileID: 1534685456}
 --- !u!1 &306432093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1359,7 +1287,7 @@ MonoBehaviour:
   goldCoinScript: {fileID: 7378627166878547501}
   startPosition: {x: 0, y: 22}
   playerName: Green
-  gameManager: {fileID: 286451180}
+  gameManager: {fileID: 1589590979550002199}
   isPlayerEliminated: 0
 --- !u!212 &1186007887
 SpriteRenderer:
@@ -2039,7 +1967,7 @@ MonoBehaviour:
   goldCoinScript: {fileID: 7378627166878547501}
   startPosition: {x: 22, y: 0}
   playerName: Purple
-  gameManager: {fileID: 286451180}
+  gameManager: {fileID: 1589590979550002199}
   isPlayerEliminated: 0
 --- !u!212 &1777843849
 SpriteRenderer:
@@ -2343,7 +2271,7 @@ MonoBehaviour:
   goldCoinScript: {fileID: 7378627166878547501}
   startPosition: {x: -22, y: 0}
   playerName: Blue
-  gameManager: {fileID: 286451180}
+  gameManager: {fileID: 1589590979550002199}
   isPlayerEliminated: 0
 --- !u!212 &1963436317
 SpriteRenderer:
@@ -2606,6 +2534,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &564300234115087138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7063352248721851455}
+  - component: {fileID: 1589590979550002199}
+  - component: {fileID: 7205285308921486753}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!212 &616727002156293101
 SpriteRenderer:
   serializedVersion: 3
@@ -2736,6 +2682,31 @@ RectTransform:
   m_AnchoredPosition: {x: -240, y: -710.8}
   m_SizeDelta: {x: 217.4048, y: 66.0534}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1589590979550002199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564300234115087138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59cd739260af27b408b3a8f1c4469f6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  redPlayer: {fileID: 7987208686208751726}
+  greenPlayer: {fileID: 1186007886}
+  bluePlayer: {fileID: 1963436316}
+  purplePlayer: {fileID: 1777843848}
+  coinCounter: 3
+  coinCounterText: {fileID: 3376405944941238704}
+  gameScoreUI: {fileID: 7205285308921486753}
+  cameraController: {fileID: 519420033}
+  goldCoinScript: {fileID: 7378627166878547501}
+  activePlayers: []
+  turnOrder: []
+  currentRound: 1
+  roundCounterText: {fileID: 719179684}
 --- !u!4 &1664402215487550028
 Transform:
   m_ObjectHideFlags: 0
@@ -3480,6 +3451,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &7063352248721851455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564300234115087138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.9, y: -28.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7205285308921486753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564300234115087138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28811fb75d5497a46a380d1a2d3fd90e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  redScoreText: {fileID: 1084537925}
+  blueScoreText: {fileID: 6758004}
+  purpleScoreText: {fileID: 1431436339}
+  greenScoreText: {fileID: 1534685456}
 --- !u!114 &7378627166878547501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3859,7 +3861,7 @@ MonoBehaviour:
   goldCoinScript: {fileID: 7378627166878547501}
   startPosition: {x: 0, y: -22}
   playerName: Red
-  gameManager: {fileID: 286451180}
+  gameManager: {fileID: 1589590979550002199}
   isPlayerEliminated: 0
 --- !u!1 &8195380578598575798
 GameObject:
@@ -4042,6 +4044,6 @@ SceneRoots:
   - {fileID: 2039862170}
   - {fileID: 963196374}
   - {fileID: 306432096}
-  - {fileID: 286451181}
+  - {fileID: 7063352248721851455}
   - {fileID: 1269805985}
   - {fileID: 776652635811180421}
