@@ -4,7 +4,13 @@ using UnityEngine;
 public class winnerCoinScript : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private Color HexColor(string hex)
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Debug.Log("Winner Name: " + GameManager.winnerName);
+        ColorChange(GameManager.winnerName);
+    }
+    private static Color HexColor(string hex)
     {
         Color color;
 
@@ -15,21 +21,21 @@ public class winnerCoinScript : MonoBehaviour
 
         return Color.black;
     }
-    public void Update()
+    public void ColorChange(string winnerName)
     {
-        if (GameManager.winnerName == "Red Player")
+        if (winnerName == "Red")
         {
             spriteRenderer.color = HexColor("#C00000");
         }
-        else if (GameManager.winnerName == "Blue Player")
+        else if (winnerName == "Blue")
         {
             spriteRenderer.color = HexColor("#3BBCC8");
         }
-        else if (GameManager.winnerName == "Green Player")
+        else if (winnerName == "Green")
         {
             spriteRenderer.color = HexColor("#13B807");
         }
-        else if (GameManager.winnerName == "Purple Player")
+        else if (winnerName == "Purple")
         {
             spriteRenderer.color = HexColor("#800080");
         }

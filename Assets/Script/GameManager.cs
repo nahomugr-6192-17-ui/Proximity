@@ -228,52 +228,24 @@ public class GameManager : MonoBehaviour
         currentRound++;
         roundCounterText.text = "ROUNDS: " + currentRound;
 
-        if (selectedPlayersCount == 4 && currentRound > 4)
+        if (selectedPlayersCount == 4 && currentRound == 4)
         {
             if (activePlayers.Count == 1)
             {
-                if (activePlayers[0].CompareTag("RedPlayer"))
-                {
-                    winnerName = "Red Player";
-                }
-                else if (activePlayers[0].CompareTag("BluePlayer"))
-                {
-                    winnerName = "Blue Player";
-                }
-                else if (activePlayers[0].CompareTag("GreenPlayer"))
-                {
-                    winnerName = "Green Player";
-                }
-                else if (activePlayers[0].CompareTag("PurplePlayer"))
-                {
-                    winnerName = "Purple Player";
-                }
+                winnerName = activePlayers[0].playerName;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                return;
             }
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            return;
         }
 
-        if (selectedPlayersCount == 3 && currentRound > 3)
+        if (selectedPlayersCount == 3 && currentRound == 3)
         {
             if (activePlayers.Count == 1)
             {
-                if (activePlayers[0].CompareTag("RedPlayer"))
-                {
-                    winnerName = "Red Player";
-                }
-                else if (activePlayers[0].CompareTag("BluePlayer"))
-                {
-                    winnerName = "Blue Player";
-                }
-                else if (activePlayers[0].CompareTag("PurplePlayer"))
-                {
-                    winnerName = "Purple Player";
-                }
-                SceneManager.LoadScene(
-                    SceneManager.GetActiveScene().buildIndex + 1
-                );
+                winnerName = activePlayers[0].playerName;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                return;
             }
-            return;
         }
 
         StartRound();
