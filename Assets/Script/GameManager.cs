@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         currentTurn = 1;
         coinCounter = 2;
         coinCounterText.text = "COINS: " + coinCounter;
-        roundCounterText.text = "ROUNDS: " + currentRound;
+        roundCounterText.text = "ROUND " + currentRound;
         StartTurn();
     }
 
@@ -226,7 +226,7 @@ public class GameManager : MonoBehaviour
         coinCounter = 2;
         coinCounterText.text = "COINS: " + coinCounter;
         currentRound++;
-        roundCounterText.text = "ROUNDS: " + currentRound;
+        roundCounterText.text = "ROUND " + currentRound;
 
         if (selectedPlayersCount == 4 && currentRound == 4)
         {
